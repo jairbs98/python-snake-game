@@ -31,41 +31,46 @@ class Game:
 
     def game_loop(self):
         while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and self.snake.direction != (0, 1):
-                        self.snake.direction = (0, -1)
-                    elif event.key == pygame.K_DOWN and self.snake.direction != (0, -1):
-                        self.snake.direction = (0, 1)
-                    elif event.key == pygame.K_LEFT and self.snake.direction != (1, 0):
-                        self.snake.direction = (-1, 0)
-                    elif event.key == pygame.K_RIGHT and self.snake.direction != (
-                        -1,
-                        0,
-                    ):
-                        self.snake.direction = (1, 0)
-
-            self.snake.move()
-
-            if self.snake.segments[0] == self.food.position:
-                self.snake.grow()
-                self.food.randomize_position()
-                self.score += 10
-                if self.score % 50 == 0:
-                    self.level.advance()
-
-            if self.snake.check_collision():
-                break
-
-            self.screen.fill(BLACK)
-            self.snake.draw(self.screen)
-            self.food.draw(self.screen)
-            self.level.draw(self.screen)
-            self.draw_score()
-            pygame.display.flip()
+            self.handle_events()
+            self.update_game_state()
+            self.render()
             self.clock.tick(10)
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            elif event.type == pygame.KEYDOWN:
+                self.handle_keydown(event.key)
+
+    def handle_keydown(self, key):
+        if key == pygame.K_UP and self.snake.direction != (0, 1):
+            self.snake.direction = (0, -1)
+        elif key == pygame.K_DOWN and self.snake.direction != (0, -1):
+            self.snake.direction = (0, 1)
+        elif key == pygame.K_LEFT and self.snake.direction != (1, 0):
+            self.snake.direction = (-1, 0)
+        elif key == pygame.K_RIGHT and self.snake.direction != (-1, 0):
+            self.snake.direction = (1, 0)
+
+    def update_game_state(self):
+        self.snake.move()
+        if self.snake.segments[0] == self.food.position:
+            self.snake.grow()
+            self.food.randomize_position()
+            self.score += 10
+            if self.score % 50 == 0:
+                self.level.advance()
+        if self.snake.check_collision():
+            self.running = False
+
+    def render(self):
+        self.screen.fill(BLACK)
+        self.snake.draw(self.screen)
+        self.food.draw(self.screen)
+        self.level.draw(self.screen)
+        self.draw_score()
+        pygame.display.flip()
 
     def show_menu(self):
         menu_running = True
