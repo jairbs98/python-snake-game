@@ -10,3 +10,4 @@ __pycache__/
 .idea/
 *.sublime-project
 *.sublime-workspace
+high_score.txt

@@ -1,8 +1,7 @@
 import pygame
-from constants import WIDTH, HEIGHT, BLUE, FONT_PATH, FONT_SIZE
+from constants import GAME_WIDTH, GAME_HEIGHT, BLUE, FONT_PATH, FONT_SIZE
 
 
-# levels.py
 class Level:
     def __init__(self):
         self.level = 1
@@ -14,4 +13,4 @@ class Level:
         level_text = pygame.font.Font(FONT_PATH, FONT_SIZE).render(
             f"Level: {self.level}", True, BLUE
         )
-        surface.blit(level_text, (WIDTH - 100, 10))
+        surface.blit(level_text, (GAME_WIDTH - 100, 10))

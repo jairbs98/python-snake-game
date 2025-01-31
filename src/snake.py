@@ -1,6 +1,5 @@
 import pygame
-
-from constants import GRID_SIZE, GREEN, WIDTH, HEIGHT
+from constants import GRID_SIZE, GREEN, GAME_WIDTH, GAME_HEIGHT
 
 
 class Snake:
@@ -13,8 +12,8 @@ class Snake:
         head_x, head_y = self.segments[0]
         dx, dy = self.direction
         new_head = (
-            (head_x + dx * GRID_SIZE) % WIDTH,
-            (head_y + dy * GRID_SIZE) % HEIGHT,
+            (head_x + dx * GRID_SIZE) % GAME_WIDTH,
+            (head_y + dy * GRID_SIZE) % GAME_HEIGHT,
         )
         self.segments.insert(0, new_head)
         if self.grow_next:
