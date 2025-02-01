@@ -2,6 +2,23 @@
 
 ¡Bienvenido al repositorio del clásico juego del gusanito! Este proyecto está desarrollado en Python utilizando la librería `pygame`. Incluye niveles, dificultad progresiva, puntuación y colisiones.
 
+## Estructura
+
+    python-snake-game/
+    │
+    ├── src/
+    │   ├── constants.py
+    │   ├── game.py
+    │   ├── snake.py
+    │   ├── food.py
+    │   ├── levels.py
+    │   ├── main.py
+    │   └── fonts/
+    │       └── Roboto-Regular.ttf
+    │
+    ├── .gitignore
+    ├── requirements.txt
+    └── high_score.txt
 
 ## 🛠️ Requisitos
 
