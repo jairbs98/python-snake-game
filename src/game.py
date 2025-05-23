@@ -33,6 +33,7 @@ class Game:
         self.playing = False
         self.high_score = 0
         self.high_score_name = ""
+        self.score = 0  # <--- Añade esta línea para inicializar self.score
         self.load_high_score()
 
     def load_high_score(self):
@@ -68,20 +69,12 @@ class Game:
                     self.running = False
                     self.playing = False
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and self.snake.direction != (0, 1):
-                        self.snake.direction = (0, -1)
-                    elif event.key == pygame.K_DOWN and self.snake.direction != (0, -1):
-                        self.snake.direction = (0, 1)
-                    elif event.key == pygame.K_LEFT and self.snake.direction != (1, 0):
-                        self.snake.direction = (-1, 0)
-                    elif event.key == pygame.K_RIGHT and self.snake.direction != (
-                        -1,
-                        0,
-                    ):
-                        self.snake.direction = (1, 0)
+                    # Delegación de manejo de input a la serpiente o a un método de la clase Game
+                    self.handle_input(event.key)
 
             self.snake.move()
 
+            # Colisión con la comida
             if self.snake.segments[0] == self.food.position:
                 self.snake.grow()
                 self.food.randomize_position()
@@ -89,7 +82,13 @@ class Game:
                 if self.score % 50 == 0:
                     self.level.advance()
 
-            if self.snake.check_collision() or self.snake.segments[0] == (-1, -1):
+            # Obtener la nueva posición de la cabeza para verificar colisiones con los límites
+            head_x, head_y = self.snake.segments[0]
+
+            # Colisión con el propio cuerpo o con los límites del juego (si no quieres que atraviese las paredes)
+            # Para que la serpiente muera al chocar con las paredes, elimina el % de snake.py en move()
+            if self.snake.check_collision() or \
+               not (0 <= head_x < GAME_WIDTH and 0 <= head_y < GAME_HEIGHT):
                 self.playing = False
                 if self.score > self.high_score:
                     self.high_score = self.score
@@ -102,15 +101,36 @@ class Game:
             self.level.draw(self.screen)
             self.draw_score()
             pygame.display.flip()
-            self.clock.tick(10)
+
+            # Ajustar la velocidad del juego basada en el nivel
+            game_speed = 10 + (self.level.level - 1) * 2  # Aumenta la velocidad en 2 ticks por nivel
+            self.clock.tick(game_speed)
+
+    def handle_input(self, key):
+        # Evitar movimientos opuestos instantáneos
+        if key == pygame.K_UP and self.snake.direction != (0, 1):
+            self.snake.direction = (0, -1)
+        elif key == pygame.K_DOWN and self.snake.direction != (0, -1):
+            self.snake.direction = (0, 1)
+        elif key == pygame.K_LEFT and self.snake.direction != (1, 0):
+            self.snake.direction = (-1, 0)
+        elif key == pygame.K_RIGHT and self.snake.direction != (-1, 0):
+            self.snake.direction = (1, 0)
 
     def show_menu(self):
         menu_running = True
         while menu_running:
             self.screen.fill(DARK_GRAY)
-            menu_text = self.font.render(
-                "Game Over! Press Enter to Restart or Esc to Quit", True, WHITE
-            )
+            # Modificar el texto del menú para una mejor experiencia inicial
+            if not self.playing and self.score == 0: # Al inicio del juego
+                menu_text = self.font.render(
+                    "Press Enter to Start Game or Esc to Quit", True, WHITE
+                )
+            else: # Después de un Game Over
+                menu_text = self.font.render(
+                    "Game Over! Press Enter to Restart or Esc to Quit", True, WHITE
+                )
+
             self.screen.blit(
                 menu_text,
                 (
@@ -145,6 +165,10 @@ class Game:
     def get_player_name(self):
         name = ""
         input_active = True
+        # Asegurarse de que el input de nombre aparezca solo si se supera el récord
+        if self.score <= self.high_score and self.high_score_name:
+            return self.high_score_name # No pedir nombre si no se supera el récord
+
         while input_active:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -169,7 +193,7 @@ class Game:
             )
             pygame.display.flip()
 
-        return name
+        return name if name else "Player" # Nombre por defecto si se deja vacío
 
     def draw_score(self):
         score_text = self.font.render(f"Score: {self.score}", True, WHITE)

@@ -57,7 +57,8 @@ Antes de ejecutar el juego, asegúrate de tener instalado Python 3.12 y las depe
     cd python-snake-game
     ```
 
-3.  Ejecuta el juego:
+3.  Asegúrate de que tu entorno virtual esté activado.
+4.  Ejecuta el juego:
 
     ```bash
     python src/main.py
@@ -67,36 +68,59 @@ Antes de ejecutar el juego, asegúrate de tener instalado Python 3.12 y las depe
 
 Si deseas generar un archivo ejecutable para Windows, sigue estos pasos:
 
-1.  Instala pyinstaller:
+1.  Asegúrate de que tu entorno virtual esté activado.
+2.  Instala `pyinstaller`:
 
     ```bash
     pip install pyinstaller
     ```
 
-2.  Genera el ejecutable:
+3.  Genera el ejecutable:
 
     ```bash
-    pyinstaller --onefile src/main.py --name snake_game
+    pyinstaller --onefile --add-data "src/fonts;fonts" src/main.py --name snake_game
     ```
 
-El archivo .exe se generará en la carpeta `dist/`.
+    El archivo `.exe` se generará en la carpeta `dist/`.
 
-2.  Genera el ejecutable:
+4.  Ejecuta el juego generado:
 
-    ```bash
-    ./dist/snake_game
-    ```
+    - **Windows**:
+      ```bash
+      .\dist\snake_game.exe
+      ```
+    - **macOS/Linux** (si generaste para tu sistema):
+      ```bash
+      ./dist/snake_game
+      ```
 
 ## 🎯 Características del Juego
 
-*   **Niveles**: Cada 50 puntos, el nivel aumenta y la velocidad del juego se incrementa.
-*   **Dificultad**: La velocidad aumenta con cada nivel.
-*   **Puntuación**: Se muestra en la pantalla.
-*   **Colisiones**: La serpiente muere si choca consigo misma.
+* **Niveles**: Cada 50 puntos, el nivel aumenta y la velocidad del juego se incrementa progresivamente, haciendo el juego más desafiante.
+* **Dificultad**: La velocidad del juego aumenta con cada nivel.
+* **Puntuación**: Tu puntuación actual se muestra en la pantalla durante el juego.
+* **Colisiones**: La serpiente muere si choca consigo misma o con los límites del área de juego.
+* **Sistema de Récords**: El juego guarda automáticamente tu puntuación más alta junto con el nombre del jugador que la obtuvo.
 
 ## 🕹️ Controles
 
-*   Flecha arriba (↑): Mover hacia arriba.
-*   Flecha abajo (↓): Mover hacia abajo.
-*   Flecha izquierda (←): Mover hacia la izquierda.
-*   Flecha derecha (→): Mover hacia la derecha.
+* Flecha arriba (↑): Mover hacia arriba.
+* Flecha abajo (↓): Mover hacia abajo.
+* Flecha izquierda (←): Mover hacia la izquierda.
+* Flecha derecha (→): Mover hacia la derecha.
+
+## 💡 Posibles Mejoras Futuras
+
+* Diferentes tipos de comida con efectos variados.
+* Introducción de obstáculos estáticos o móviles.
+* Modo de juego con múltiples jugadores.
+* Funcionalidad de pausa en el juego.
+* Efectos de sonido y música de fondo.
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` (si se añade) para más detalles.
+
+---
+
+Para implementar estos cambios, simplemente copia el contenido de cada bloque de código y reemplázalo en el archivo correspondiente en tu repositorio.
