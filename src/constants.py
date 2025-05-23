@@ -20,7 +20,10 @@ BLUE = (33, 150, 243)  # Material Design Blue
 GRAY = (158, 158, 158) # Material Design Gray
 DARK_GRAY = (50, 50, 50) # Dark Gray for background
 
-FONT_PATH = "src/fonts/Roboto-Regular.ttf"  # Ruta a la fuente Roboto
+# Ruta a la fuente Roboto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FONT_PATH = os.path.join(BASE_DIR, "fonts", "Roboto-Regular.ttf")
+
 FONT_SIZE = 24
 
 # Ruta al archivo de récords
